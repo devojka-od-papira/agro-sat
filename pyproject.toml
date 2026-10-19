@@ -1,0 +1,52 @@
+[project]
+name = "agrosat"
+version = "0.1.0"
+description = "AI crop mapping and drought monitoring for Vojvodina from Sentinel-2 imagery."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Bojana Bojić" }]
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pystac-client>=0.8",
+    "odc-stac>=0.3.10",
+    "xarray>=2024.6",
+    "rioxarray>=0.17",
+    "rasterio>=1.4",
+    "geopandas>=1.0",
+    "dask[array]>=2024.6",
+    "zarr>=2.18,<3",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "matplotlib>=3.9",
+    "scikit-learn>=1.5",
+    "lightgbm>=4.5",
+]
+
+[project.optional-dependencies]
+viz = ["leafmap>=0.38", "jupyterlab>=4.2"]
+dev = ["pytest>=8.3", "ruff>=0.6"]
+
+[project.scripts]
+agrosat-inventory = "agrosat.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agrosat"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:odc.*",
+    "ignore::PendingDeprecationWarning",
+    "ignore::rasterio.errors.NotGeoreferencedWarning",
+]
